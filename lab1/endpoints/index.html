@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Main.py - Лабораторные работы Web-программирование</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">Лабораторные работы Web-программирование</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Lab 1</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../task/" class="dropdown-item">Задание</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Main.py</a>
+</li>
+                                    
+<li>
+    <a href="../models/" class="dropdown-item">Models.py</a>
+</li>
+                                    
+<li>
+    <a href="../db/" class="dropdown-item">db.py</a>
+</li>
+                                    
+<li>
+    <a href="../env/" class="dropdown-item">env.py</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Lab 2</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../lab2/task/" class="dropdown-item">Задание</a>
+</li>
+                                    
+<li>
+    <a href="../../lab2/task1/" class="dropdown-item">Задача 1</a>
+</li>
+                                    
+<li>
+    <a href="../../lab2/task2/" class="dropdown-item">Задача 2</a>
+</li>
+                                    
+<li>
+    <a href="../../lab2/comparison/" class="dropdown-item">Сравнение</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Lab 3</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../lab3/task/" class="dropdown-item">Задание</a>
+</li>
+                                    
+<li>
+    <a href="../../lab3/task1/" class="dropdown-item">Задача 1</a>
+</li>
+                                    
+<li>
+    <a href="../../lab3/task2/" class="dropdown-item">Задача 2</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../task/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../models/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<pre><code class="language-py">from fastapi import FastAPI, Depends, HTTPException
+
+from models import *
+from db import *
+
+app = FastAPI()
+
+
+@app.on_event(&quot;startup&quot;)
+def on_startup():
+    init_db()
+
+
+@app.get(&quot;/&quot;)
+async def root():
+    return {&quot;message&quot;: &quot;Hello World&quot;}
+
+
+@app.get(&quot;/user/{user_id}&quot;, response_model=UserDisplay)
+def get_user(user_id: int, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.id == user_id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail=&quot;User not found&quot;)
+    return db_user
+
+
+@app.get(&quot;/users&quot;, response_model=List[User])
+def get_users(db: Session = Depends(get_db)):
+    return db.query(User).all()
+
+
+@app.post(&quot;/user&quot;)
+def create_user(user: UserBase, db: Session = Depends(get_db)):
+    db_user = User(**user.dict())
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+@app.delete(&quot;/user/{user_id}&quot;)
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.id == user_id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail=&quot;User not found&quot;)
+    db.delete(db_user)
+    db.commit()
+    return {&quot;message&quot;: &quot;User deleted successfully&quot;}
+
+
+@app.patch(&quot;/user/{user_id}&quot;)
+def update_user(user_id: int, user: UserBase, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.id == user_id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail=&quot;User not found&quot;)
+    for attr, value in user.dict().items():
+        setattr(db_user, attr, value)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+# Endpoints for Budget CRUD operations
+@app.get(&quot;/budget/{budget_id}&quot;, response_model=BudgetDisplay)
+def get_budget(budget_id: int, db: Session = Depends(get_db)):
+    db_budget = db.query(Budget).filter(Budget.id == budget_id).first()
+    if not db_budget:
+        raise HTTPException(status_code=404, detail=&quot;Budget not found&quot;)
+    return db_budget
+
+
+@app.get(&quot;/budgets&quot;, response_model=List[Budget])
+def get_budgets(db: Session = Depends(get_db)):
+    return db.query(Budget).all()
+
+
+@app.post(&quot;/budget&quot;)
+def create_budget(budget: BudgetBase, db: Session = Depends(get_db)):
+    db_budget = Budget(**budget.dict())
+    db.add(db_budget)
+    db.commit()
+    db.refresh(db_budget)
+    return db_budget
+
+
+@app.delete(&quot;/budget/{budget_id}&quot;)
+def delete_budget(budget_id: int, db: Session = Depends(get_db)):
+    db_budget = db.query(Budget).filter(Budget.id == budget_id).first()
+    if not db_budget:
+        raise HTTPException(status_code=404, detail=&quot;Budget not found&quot;)
+    db.delete(db_budget)
+    db.commit()
+    return {&quot;message&quot;: &quot;Budget deleted successfully&quot;}
+
+
+@app.patch(&quot;/budget/{budget_id}&quot;)
+def update_budget(budget_id: int, budget: BudgetBase, db: Session = Depends(get_db)):
+    db_budget = db.query(Budget).filter(Budget.id == budget_id).first()
+    if not db_budget:
+        raise HTTPException(status_code=404, detail=&quot;Budget not found&quot;)
+    for attr, value in budget.dict().items():
+        setattr(db_budget, attr, value)
+    db.commit()
+    db.refresh(db_budget)
+    return db_budget
+
+
+# Endpoints for Category CRUD operations
+@app.get(&quot;/category/{category_id}&quot;, response_model=CategoryDisplay)
+def get_category(category_id: int, db: Session = Depends(get_db)):
+    db_category = db.query(Category).filter(Category.id == category_id).first()
+    if not db_category:
+        raise HTTPException(status_code=404, detail=&quot;Category not found&quot;)
+    return db_category
+
+
+@app.get(&quot;/categories&quot;, response_model=List[Category])
+def get_categories(db: Session = Depends(get_db)):
+    return db.query(Category).all()
+
+
+@app.post(&quot;/category&quot;)
+def create_category(category: CategoryBase, db: Session = Depends(get_db)):
+    db_category = Category(**category.dict())
+    db.add(db_category)
+    db.commit()
+    db.refresh(db_category)
+    return db_category
+
+
+@app.delete(&quot;/category/{category_id}&quot;)
+def delete_category(category_id: int, db: Session = Depends(get_db)):
+    db_category = db.query(Category).filter(Category.id == category_id).first()
+    if not db_category:
+        raise HTTPException(status_code=404, detail=&quot;Category not found&quot;)
+    db.delete(db_category)
+    db.commit()
+    return {&quot;message&quot;: &quot;Category deleted successfully&quot;}
+
+
+@app.patch(&quot;/category/{category_id}&quot;)
+def update_category(category_id: int, category: CategoryBase, db: Session = Depends(get_db)):
+    db_category = db.query(Category).filter(Category.id == category_id).first()
+    if not db_category:
+        raise HTTPException(status_code=404, detail=&quot;Category not found&quot;)
+    for attr, value in category.dict().items():
+        setattr(db_category, attr, value)
+    db.commit()
+    db.refresh(db_category)
+    return db_category
+
+
+# Endpoints for Income CRUD operations
+@app.get(&quot;/income/{income_id}&quot;, response_model=IncomeDisplay)
+def get_income(income_id: int, db: Session = Depends(get_db)):
+    db_income = db.query(Income).filter(Income.id == income_id).first()
+    if not db_income:
+        raise HTTPException(status_code=404, detail=&quot;Income not found&quot;)
+    return db_income
+
+
+@app.get(&quot;/incomes&quot;, response_model=List[Income])
+def get_incomes(db: Session = Depends(get_db)):
+    return db.query(Income).all()
+
+
+@app.post(&quot;/income&quot;)
+def create_income(income: IncomeBase, db: Session = Depends(get_db)):
+    db_income = Income(**income.dict())
+    db.add(db_income)
+    db.commit()
+    db.refresh(db_income)
+    return db_income
+
+
+@app.delete(&quot;/income/{income_id}&quot;)
+def delete_income(income_id: int, db: Session = Depends(get_db)):
+    db_income = db.query(Income).filter(Income.id == income_id).first()
+    if not db_income:
+        raise HTTPException(status_code=404, detail=&quot;Income not found&quot;)
+    db.delete(db_income)
+    db.commit()
+    return {&quot;message&quot;: &quot;Income deleted successfully&quot;}
+
+
+@app.patch(&quot;/income/{income_id}&quot;)
+def update_income(income_id: int, income: IncomeBase, db: Session = Depends(get_db)):
+    db_income = db.query(Income).filter(Income.id == income_id).first()
+    if not db_income:
+        raise HTTPException(status_code=404, detail=&quot;Income not found&quot;)
+    for attr, value in income.dict().items():
+        setattr(db_income, attr, value)
+    db.commit()
+    db.refresh(db_income)
+    return db_income
+
+
+# Endpoints for Expense CRUD operations
+@app.get(&quot;/expense/{expense_id}&quot;, response_model=ExpenseDisplay)
+def get_expense(expense_id: int, db: Session = Depends(get_db)):
+    db_expense = db.query(Expense).filter(Expense.id == expense_id).first()
+    if not db_expense:
+        raise HTTPException(status_code=404, detail=&quot;Expense not found&quot;)
+    return db_expense
+
+
+@app.get(&quot;/expenses&quot;, response_model=List[Expense])
+def get_expenses(db: Session = Depends(get_db)):
+    return db.query(Expense).all()
+
+
+@app.post(&quot;/expense&quot;)
+def create_expense(expense: ExpenseBase, db: Session = Depends(get_db)):
+    db_expense = Expense(**expense.dict())
+    db.add(db_expense)
+    db.commit()
+    db.refresh(db_expense)
+    return db_expense
+
+
+@app.delete(&quot;/expense/{expense_id}&quot;)
+def delete_expense(expense_id: int, db: Session = Depends(get_db)):
+    db_expense = db.query(Expense).filter(Expense.id == expense_id).first()
+    if not db_expense:
+        raise HTTPException(status_code=404, detail=&quot;Expense not found&quot;)
+    db.delete(db_expense)
+    db.commit()
+    return {&quot;message&quot;: &quot;Expense deleted successfully&quot;}
+
+
+@app.patch(&quot;/expense/{expense_id}&quot;)
+def update_expense(expense_id: int, expense: ExpenseBase, db: Session = Depends(get_db)):
+    db_expense = db.query(Expense).filter(Expense.id == expense_id).first()
+    if not db_expense:
+        raise HTTPException(status_code=404, detail=&quot;Expense not found&quot;)
+    for attr, value in expense.dict().items():
+        setattr(db_expense, attr, value)
+    db.commit()
+    db.refresh(db_expense)
+    return db_expense
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
