@@ -151,6 +151,8 @@
                     <div class="col-md-9" role="main">
 
 <h2 id="dockerfile">dockerfile</h2>
+<p>Установка зависимостей и копирование файлов в контейнер.
+Запуск FastAPI приложения с uvicorn.</p>
 <pre><code class="language-dockerfile"># образ с Python
 FROM python:3.12-slim
 
@@ -169,6 +171,7 @@ CMD [&quot;uvicorn&quot;, &quot;main:app&quot;, &quot;--host&quot;, &quot;0.0.0.
 
 </code></pre>
 <h2 id="parserpy">parser.py</h2>
+<p>Файл с функцией парсинга страницы и сохранения в базу данных.</p>
 <pre><code class="language-python">import aiohttp
 from bs4 import BeautifulSoup
 from db import save_to_db

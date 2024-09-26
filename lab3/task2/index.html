@@ -156,6 +156,9 @@
                     <div class="col-md-9" role="main">
 
 <h2 id="dockerfile">dockerfile</h2>
+<p>Установка зависимостей и копирование файлов в контейнер.
+Разделение контейнера на сервисы.
+Определение сети для контейнеров и установка переменных окружения для контейнеров.</p>
 <pre><code class="language-dockerfile">version: '3.8'
 
 services:
@@ -200,6 +203,7 @@ networks:
 
 </code></pre>
 <h2 id="parserpy">parser.py</h2>
+<p>Взят из предыдущей лабораторной работы.</p>
 <pre><code class="language-python">import aiohttp
 from bs4 import BeautifulSoup
 from fastapi import HTTPException
@@ -236,6 +240,7 @@ async def parse_and_save(url: str):
 
 </code></pre>
 <h2 id="main-py">main .py</h2>
+<p>Взят из первой лабораторной работы. Добавлены эндпоинты гет и пост для парсинга страницы.</p>
 <pre><code class="language-python">from fastapi import FastAPI, Depends, HTTPException
 
 from models import *

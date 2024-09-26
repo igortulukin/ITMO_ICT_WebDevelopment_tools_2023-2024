@@ -135,11 +135,19 @@
     
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#mainpy" class="nav-link">Main.py</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
+<h2 id="mainpy">Main.py</h2>
+<p>Эндпоинты для CRUD операций над пользователями, бюджетами, категориями, доходами и расходами.
+Используется SQLAlchemy для работы с базой данных и FastAPI для создания API.</p>
 <pre><code class="language-py">from fastapi import FastAPI, Depends, HTTPException
 
 from models import *
